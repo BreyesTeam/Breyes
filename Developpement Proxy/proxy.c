@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 
   /* 1 : black list management ----------------------------------------------*/
 	      
-  printf("----------------------------------------------------------\n");
+  printf("---------------------------------------------------------\n");
   if ((blackList = fopen("blacklist.txt","r")) == NULL)
     {
       fprintf(stderr,"blacklist.txt file opening failure \n");
