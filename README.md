@@ -18,6 +18,7 @@ bootloader (programme de base/obligatoire sur la ROM de l'arduino ~= 0.5Ko)
 TOTAL ~= 32.5Ko
 Avec les données à recevoir + la suite du programme ça dépasse. Il va surement faloir optimiser les librairies utilisées.
 On n'utilise pas les fonctions d'appel avec la librairie GSM par exemple, donc ça dégage. 
+
 -------------------------------
 
 Convention de nommage des variables : 
