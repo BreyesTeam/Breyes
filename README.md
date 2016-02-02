@@ -9,8 +9,15 @@ Une tâche = Une fonction. Les fonctions sont regroupées dans 3 fichiers : GPS_
 .h : Déclaration des prototypes de fonction + structures + constante #define à faire dans les .h. On peut déclarer une variable dans un .h mais on ne la fixe pas dans le .h, sinon il y a conflit de déclaration.
 .cpp : Implémentation des fonctions + déclaration des variables dans les .cpp. 
 
-Optimisation mémoire : la taille du code doit rester inférieur à 32Ko. Il faut donc penser à optimiser son code. Ne pas utiliser de fonctions trop évoluées. Essayez de ne pas utiliser de grandes variables (ex: un tableau de float[1000] fait déjà 4Ko. Une chaîne de caractère de 1000 caractères fait 1Ko. 
-
+Problème #1 : Optimisation mémoire : la taille du code doit rester inférieur à 32Ko. Il faut donc penser à optimiser son code. Ne pas utiliser de fonctions trop évoluées. Essayez de ne pas utiliser de grandes variables (ex: un tableau de float[1000] fait déjà 4Ko. Une chaîne de caractère de 1000 caractères fait 1Ko. 
+Pour l'instant :
+main + GPS_manager ~= 17Ko. 
+librairie Smart_WAV ~= 11.7Ko
+librairie wire (pour gérer le GPS) ~= 4Ko
+bootloader (programme de base/obligatoire sur la ROM de l'arduino ~= 0.5Ko)
+TOTAL ~= 32.5Ko
+Avec les données à recevoir + la suite du programme ça dépasse. Il va surement faloir optimiser les librairies utilisées.
+On n'utilise pas les fonctions d'appel avec la librairie GSM par exemple --> ça dégage. 
 -------------------------------
 
 Convention de nommage des variables : 
