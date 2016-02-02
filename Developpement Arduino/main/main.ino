@@ -2,10 +2,15 @@
   main.cpp - main program.
   Br'Eyes, 2016.
   Released into the INSA domain.
-  Ce client est configuré pour accéder à une page web précisé dans path. Notre objectif sera de formater ce path en fonction du bus choisi par la personne aveugle.
-  Il est configuré pour accéder au réseau SFR (sl2sfr) avec mon code PIN (Il fallait bien ^^). On peut bien sûr modifier ces 2 paramêtres en fonction de la SIM insérée. 
-  Basiquement, un client web envoi une requête GET vers un serveur WEB. Cette reqûete GET possède un format très précis, qui précise notamment le nom du serveur et la page demandé. 
-  Un client web utilise le système de socket. C'est en fait un élement logiciel réseau qui agit comme l'interface entre la couche application et la couche transport du model OSI. 
+  Ce client est configuré pour accéder à une page web précisé dans path. 
+  Notre objectif sera de formater ce path en fonction du bus choisi par la personne aveugle.
+  Il est configuré pour accéder au réseau SFR (sl2sfr) avec mon code PIN (Il fallait bien ^^). 
+  On peut bien sûr modifier ces 2 paramêtres en fonction de la SIM insérée. 
+  Basiquement, un client web envoi une requête GET vers un serveur WEB. 
+  Cette reqûete GET possède un format très précis, qui précise notamment le nom du serveur et la page demandé. 
+  Un client web utilise le système de socket. 
+  C'est en fait un élement logiciel réseau qui agit comme l'interface entre la couche 
+  application et la couche transport du model OSI. 
   Tout programme réseau doit donc utiliser un socket pour utiliser le réseau. 
   Les sockets possèdent plusieurs fonctions associées, notemment:
   - connect pour se connecter au serveur
@@ -16,7 +21,10 @@
 
   Le main est codé comme une machine d'état (Mealy). Voir variable "state", et le switch plus loin. 
   Dans une première phase de test, l'état actuel est INIT, et les autres états sont annulés/commentés. 
-  De cette façon on peut tester plus facilement 1) structure du programme 2) la connexion réseau 3) l'envoi des données GPS
+  De cette façon on peut tester plus facilement 
+  1) structure du programme 
+  2) la connexion réseau 
+  3) l'envoi des données GPS
 */
 
  // libraries
