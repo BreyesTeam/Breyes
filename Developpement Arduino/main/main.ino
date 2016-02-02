@@ -21,8 +21,7 @@
 
   Le main est codé comme une machine d'état (Mealy). Voir variable "state", et le switch plus loin. 
   Dans une première phase de test, l'état actuel est INIT, et les autres états sont annulés/commentés. 
-  De cette façon on peut tester plus facilement 
-  1) structure du programme 
+  De cette façon on peut tester plus facilement la
   2) la connexion réseau 
   3) l'envoi des données GPS
 */
