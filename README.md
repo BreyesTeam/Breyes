@@ -7,6 +7,7 @@ Commentez votre code le plus souvent possible ! Veillez à bien renseigner les c
 Une tâche = Une fonction. Les fonctions sont regroupées dans 3 fichiers : GPS_management.cpp, GSM_management.cpp, WAV_management.cpp. 
 
 .h : Déclaration des prototypes de fonction + structures + constante #define à faire dans les .h. On peut déclarer une variable dans un .h mais on ne la fixe pas dans le .h, sinon il y a conflit de déclaration.
+
 .cpp : Implémentation des fonctions + déclaration des variables dans les .cpp. 
 
 Problème #1 : Optimisation mémoire : la taille du code doit rester inférieur à 32Ko. Il faut donc penser à optimiser son code. Ne pas utiliser de fonctions trop évoluées. Essayez de ne pas utiliser de grandes variables (ex: un tableau de float[1000] fait déjà 4Ko. Une chaîne de caractère de 1000 caractères fait 1Ko. 
