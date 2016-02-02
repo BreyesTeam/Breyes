@@ -24,7 +24,7 @@ GitHub:
 https://guides.github.com/activities/hello-world/
 https://guides.github.com/introduction/flow/index.html
 https://desktop.github.com/
-Ces pages expliquent comment se servir des actions de base de git : créer une branche, commit (add/edit/delete un fichier), le pull request (feedback des autres utilisateur sur votre/vos commits + comparaison de votre code avec le code principale), merge (intégration de votre travail dans le flux principal). 
+Ces pages expliquent comment se servir des actions de base de git : créer une branche, commit (add/edit/delete un fichier), le pull request (feedback des autres utilisateurs sur votre/vos commits + comparaison de votre code avec le code principale), merge (intégration de votre travail dans le flux principal). 
 Le dernier lien est relatif à l'utilisation de Git en logiciel sur Windows/Mac. 
 
 
