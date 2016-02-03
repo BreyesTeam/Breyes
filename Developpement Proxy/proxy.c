@@ -51,6 +51,18 @@
   après -o est la sortie (o  comme output) et donc notre exécutable.
   On lance ensuite le programme :
     ./serveurProxy
+    
+  Ce programme est à utiliser sur une machine Linux. une fois compilé puis lancé, il doit 
+  pouvoir être accessible au client. Il faut pour cela connaître l'@ IP publique du réseau 
+  local sur lequel la machine Linux est présente. Cette adresse est comme la porte 
+  d'accès logique (ou encore l'adresse logique du routeur) vers le réseau local depuis 
+  Internet. Il faut ensuite dire à la porte d'accès matériel (le routeur) vers quelle 
+  machine du réseau local il doit relayer les  requêtes/info lorsqu'une machine extérieure 
+  souhaite se connecter sur notre Proxy. On utilise pou cela le service NAT (Network Address
+  Translation) interne au routeur, qui s'occupe en gros de faire correspondre à l'@ publique 
+  du réseau, l'@ privée (locale) du proxy. Il faut donc par exemple aller dans les paramètre
+  de la LiveBox (chez orange), puis d'aller dans NAT est de faire correspondre à l'@ IP 
+  publique, l'@ IP du proxy. 
 *********************************************************************************************
 */
 
