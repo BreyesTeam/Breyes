@@ -6,7 +6,7 @@ Commentez votre code le plus souvent possible ! Veillez à bien renseigner les c
 
 Une tâche = Une fonction. Les fonctions sont regroupées dans 3 fichiers : GPS_management.cpp, GSM_management.cpp, WAV_management.cpp. 
 
-.h : Déclaration des prototypes de fonction + structures + constantes #define.
+.h : Déclaration des prototypes de fonction + structures + constantes #define + includes.
 
 .cpp : Implémentation des fonctions + déclaration/initialisation des variables/objets/structures. 
 
