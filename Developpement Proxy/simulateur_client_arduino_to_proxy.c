@@ -7,8 +7,11 @@ Ce client a pour but de simuler le client Arduino, vu qu'on ne peut pas toujours
 Il y a deux champs à modifier
 1) HOSTNAME : insérer ici le nom de l'@ IP publique sur laquelle le serveur est installé http://www.mon-ip.com/
 La procédure pour installer le serveur Linux chez vous est décrite dans un autre fichier. 
-Il est aussi possible de tester le proxy en local. C'est à dire que ce client est installé sur la même machine que le serveur, donc pas besoin de passer par le réseau internet. Il faut indiquer l'adresse locale : 127.0.0.1 dans HOSTNAME
-2) request : c'est la chaîne de caractère que l'on envoie au proxy en fonction de l'état actuel sur Arduino  (par exemple on peut 
+Il est aussi possible de tester le proxy en local. 
+C'est à dire que ce client est installé sur la même machine que le serveur, 
+donc pas besoin de passer par le réseau internet. Il faut indiquer l'adresse locale : 127.0.0.1 dans HOSTNAME
+2) request : c'est la chaîne de caractère que l'on envoie au proxy en fonction 
+de l'état actuel sur Arduino  (par exemple on peut 
 envoyer les coordonnées actuelles de l'Arduino, ou encore le numéro de bus sélectionné.
 
 */
