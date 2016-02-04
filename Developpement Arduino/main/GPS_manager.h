@@ -10,6 +10,7 @@ Released into the INSA domain.
 struct GPS_coordinates{
   float latitude;
   float longitude;
+  float altitude;
 };
 
 GPS_coordinates GPS_get_coordinates(void);
