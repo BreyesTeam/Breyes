@@ -14,6 +14,9 @@ donc pas besoin de passer par le réseau internet. Il faut indiquer l'adresse lo
 de l'état actuel sur Arduino  (par exemple on peut 
 envoyer les coordonnées actuelles de l'Arduino, ou encore le numéro de bus sélectionné.
 
+En fonction de ce qui est envoyé par ce client, 
+il faudra gérer différent comportement sur le proxy (qu recevra cette requête).
+
 */
 
 #include <stdio.h>
