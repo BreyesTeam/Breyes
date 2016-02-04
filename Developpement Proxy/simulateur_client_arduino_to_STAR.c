@@ -3,8 +3,8 @@
 ** Br'Eyes project
 ** 25/01/2016
 
-Ce siumlateur est là pour tester un accès direct depuis Arduino vers le serveur STAR. Il suffit juste de modifier la constante URL pour obtenir la page 
-web html avec le code JSON désiré. 
+Ce siumlateur est là pour tester un accès direct depuis Arduino vers le serveur STAR. Il suffit juste de modifier la 
+constante URL pour obtenir la page web html avec le code JSON désiré. 
 
 */
 
