@@ -6,6 +6,8 @@ une fois compilé (gcc server_for_android_testing.c -o server), il faut lancer l
 Le serveur est alors en écoute.
 Il faut envoyer une donnée depuis le client android, et cette donnée s'affiche ici.
 Ce serveur test aussi la connexion depuis Android. 
+
+Normalement il n'y a rien à modifier ici
 */
 
 #include <stdio.h>
