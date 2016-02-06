@@ -5,7 +5,6 @@
 
 Ce siumlateur est là pour tester un accès direct depuis Arduino vers le serveur STAR. Il suffit juste de modifier la 
 constante URL pour obtenir la page web désiré. 
-
 */
 
 #include <stdio.h>
@@ -21,7 +20,7 @@ constante URL pour obtenir la page web désiré.
 #include <arpa/inet.h>
 
 #define PORT "80" 
-#define MAXDATASIZE 2048 // max number of bytes we can get at once 
+#define MAXDATASIZE 8192 // max number of bytes we can get at once 
 
 #define HOSTNAME "data.explore.star.fr"
 #define URL "/api/records/1.0/search/?dataset=tco-bus-topologie-pointsarret-td&facet=codeinseecommune&facet=nomcommune&facet=estaccessiblepmr&facet=mobilier"
