@@ -62,8 +62,20 @@
   Translation) interne au routeur, qui s'occupe en gros de faire correspondre à l'@ publique 
   du réseau, l'@ privée (locale) du proxy. Il faut donc par exemple aller dans les paramètres
   de la LiveBox (chez orange), puis aller dans service NAT et faire correspondre à l'@ IP 
-  publique, l'@ IP du proxy. 
+  publique, l'@ IP du proxy. Tout est expliqué dans le fichier "Installer un proxy Linux"
+
 *********************************************************************************************
+CE QU IL FAUT FAIRE ICI
+ON VA D'ABORD TESTER LA RECEPTION DES DONNEES GPS ET LE CALCUL DE L'ARRET LE + PROCHE
+1) Installer le serveur comme expliqué dans le fichier "Installer serveur proxy Linux"
+2) Vous pouvez soit utiliser la carte Arduino pour envoyer les requêtes, 
+soit utiliser le code qui simule un client (pas forcément besoin d'Internet pour ça)
+3) Allez directement à la partie 5 (extract useful information) et 6 
+(create the new request to send to the web server) pour analyser les données reçues depuis le client
+et envoyer une requête spécifique (fichier à télécharger) vers le serveur STAR en fonction 
+des données reçues. 
+4) Une fois que vous avez réussi cela, on peut analyser le fichier reçu en retour et envoyer 
+une données en retour vers le GPS : 10 (send http data to the client + filter)
 */
 
 #include <stdio.h>
@@ -85,6 +97,11 @@
 #define PORT "3490" // the port users will be connecting to
 #define HOST "data.explore.star.fr"
 
+enum client_state {GPSstate, BUS_STOP_RESEARCHstate, OTHERstate}; 
+// états en fonction de l'état actuel et ce qui est envoyé par le client
+enum server_state {TRUCstate, MACHINstate, LOLstate};
+// états en fonctions de l'état actuel et ce qui est renvoyé par le serveur STAR
+
 void sigchld_handler(int s)
 {
   while(waitpid(-1, NULL, WNOHANG) > 0);
@@ -96,6 +113,7 @@ void *get_in_addr(struct sockaddr *sa)
   if (sa->sa_family == AF_INET) return &(((struct sockaddr_in*)sa)->sin_addr);
   return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
+
 /* -------------------------------------------------------------------------------*/
 /* here is the algorithm followed in this c program ------------------------------*/
 /* 
@@ -113,11 +131,14 @@ void *get_in_addr(struct sockaddr *sa)
 
 int main(void)
 {
+  int actual_client_state = GPSstate;
+  int actual_server_state = TRUCstate;
+
   /* server proxy part variables */
   int sockfd;  // listen on sockfd
   struct addrinfo hints, *servinfo=NULL, *p=NULL /*used for socket, server part information*/;
   struct sockaddr_storage their_addr; // connector's address information
-  char http_request[MAXDATASIZE];
+  char request_from_arduino[MAXDATASIZE];
   char s[INET6_ADDRSTRLEN];
   socklen_t sin_size; //used for accept
   struct sigaction sa;
@@ -135,6 +156,7 @@ int main(void)
   /* http information get from web server */
   char received_data[MAXDATASIZE], header[MAXDATASIZE];
   int headerLen, segment=0;
+  char* data_to_arduino;
 
   /* 1 : create a socket, binding the socket to the desired address and port */
 
@@ -218,27 +240,34 @@ int main(void)
 
       /* 4 : receive data from the client  ----------------------------------------------*/
 
-      if ((numbytes = recv(new_fd, http_request, MAXDATASIZE-1, 0)) == -1){
+      if ((numbytes = recv(new_fd, request_from_arduino, MAXDATASIZE-1, 0)) == -1){
         perror("recv");
       }
-      http_request[numbytes] = '\0';
+      request_from_arduino[numbytes] = '\0';
       printf("originale request : \n");
       printf("----------------------------------------------------------\n");
-      printf("%s", http_request);
+      printf("%s", request_from_arduino);
 
 
       /* 5 : extract useful information ------------------------------------------------*/
 
-      // get the url from the original request
-      //pch0 = strstr(http_request, "GET http://");
-      //strcpy(start, pch0+11+strlen(host)); //  = sizeof "GET http:// + sizeof host" 
-      //pch1 = strstr(http_request, " HTTP");
-      //urlLen = strlen(start) - strlen(pch1);
-      //if((url = (char*)calloc(urlLen+1,sizeof(char))) == NULL) 
-      //fprintf(stderr, "start variable allocation failure\n");
-      //strncpy(url, start, urlLen);
+      //in function of what is received from the Arduino board client, perform adapted analyses and actions
+      //state = ?
 
       /* 6 : create the new request to send to the web server----------------------*/
+      
+      actual_client_state = GPSstate;
+	
+      switch(actual_client_state){
+	case GPSstate :
+		url = "/api/records/1.0/search/?dataset=tco-bus-topologie-pointsarret-td&facet=codeinseecommune&facet=nomcommune&facet=estaccessiblepmr&facet=mobilier";
+		break;
+	case BUS_STOP_RESEARCHstate :
+		url = "/api/records/1.0/search/?dataset=tco-bus-circulation-passages-tr&facet=idligne&facet=nomcourtligne&facet=sens&facet=destination&facet=precision";
+		break;
+	case OTHERstate :
+		url = "/api/records/1.0/search/?dataset=tco-bus-vehicules-position-tr&facet=numerobus&facet=etat&facet=nomcourtligne&facet=sens&facet=destination";
+	}
 
       request_base = "GET /%s HTTP/1.1\r\nHost: %s\r\nUser-Agent: %s\r\nConnection: close\r\n\r\n";		
       sprintf(request_to_web_server, request_base, url, host, userAgent);
@@ -283,17 +312,24 @@ int main(void)
 
       /* 10 : send http data to the arduino board + filter -----------------------------*/
 
-      for(segment=0;((numbytes = recv(webServerSock, received_data, MAXDATASIZE, 0)) > 0);segment++){
-        if(!segment){ // if we are reading the header
-          pch1 = strstr(received_data, "\r\n\r\n");	
-          headerLen = strlen(received_data) - strlen(pch1);
-          strncpy(header, received_data, headerLen);
-          printf("header : \n%s", header);
-          printf("\n----------------------------------------------------------\n");
-        }	  
+      for(segment=0;((numbytes = recv(webServerSock, received_data, MAXDATASIZE, 0)) > 0);segment++){ 
+	//received_data = fichier demandé aui serveur STAR et reçu (en plusieurs morceaux (segments)
       }
 
-      send(new_fd,received_data,numbytes,0);
+      //en fonction des données reçues ici, on effectue quelque traitement 
+      //(filtrage des données JSON, actions à envoyer à Arduino (data_to_arduino), etc...)
+	
+      switch(actual_server_state){
+	case TRUCstate :
+		break;
+	case MACHINstate :
+		break;
+	case LOLstate :
+		break;
+      }
+
+
+      send(new_fd,data_to_arduino,numbytes,0); //on envoi
       printf("send information got from the web server to client (segment %d):\n", segment);
       printf("----------------------------------------------------------\n");
       printf("%s", received_data);
