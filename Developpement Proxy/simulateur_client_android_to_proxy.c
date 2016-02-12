@@ -1,11 +1,12 @@
 /*
-** simulateur_client_android_to_proxy.c
+** client.c
 ** Br'Eyes project
 ** 25/01/2016
 
 Ce client a pour but de simuler le client Android, au cas où (par exemple pour simuler 
 le comportement que devrais avoir le mobile android).
-Il envoie seulement son ID (voir tout en bas: ID_5).
+Il envoie seulement son ID (voir tout en bas: ID_5). Le serveur renvoie une chaîne
+de caractère s'il a reçu l'info. Chaîne de caractère par défaut : "SALUTLOL"
 Il y a deux champs à modifier:
 1) HOSTNAME : insérer ici le nom de l'@ IP publique sur laquelle le serveur est installé http://www.mon-ip.com/ (pensez à ajouter une redirection d'adresse NAT dans le routeur). Pour tester en local (sans passer par internet), il suffit de mettre l'@ locale. 
 La procédure pour installer le serveur Linux chez vous est décrite dans un autre fichier. 
@@ -101,6 +102,12 @@ int main(void)
         /* 4 : send the new request to proxy ---------------------------------*/
 	if(send(sockfd, request, strlen(request), 0)==-1) perror("send");
 	printf("request sent by android: %s\n", request);
+
+	if ((numbytes = recv(sockfd, buf, MAXDATASIZE-1, 0)) == -1) {
+        	perror("recv");
+        	exit(1);
+    	}
+	printf("answer from the server: %s\n", buf);
 
 	return EXIT_SUCCESS;
 }
