@@ -1,13 +1,12 @@
 /*
-** server_for_android_testing.c -- 
+** server.c -- a stream socket server demo
 
 Ce programme est à installer sur une machine Linux. Le client Android doit se connecter à l'adresse IP de ce serveur http://www.mon-ip.com/ (configurer le NAT dans le routeur).
 une fois compilé (gcc server_for_android_testing.c -o server), il faut lancer le serveur : ./server 
 Le serveur est alors en écoute.
 Il faut envoyer une donnée depuis le client android, et cette donnée s'affiche ici.
 Ce serveur test aussi la connexion depuis Android. 
-
-Normalement il n'y a rien à modifier ici
+Une fois que la donnée est reçu sur ce serveur, ce serveur renvoie la chaîne "SALUTLOL"
 */
 
 #include <stdio.h>
@@ -60,6 +59,7 @@ int main(void)
 	int rv;
 	char buf[MAXDATASIZE] ="";
 	int numbytes;
+	char *answer;
 
 	memset(&hints, 0, sizeof hints);
 	hints.ai_family = AF_UNSPEC;
@@ -136,6 +136,10 @@ int main(void)
 
 		buf[numbytes] = '\0';
 		printf("data received: %s\n", buf);
+
+		answer = "SALUTLOL"; //renvoie cette chaîne au client android si tout 						est ok
+
+		if(send(new_fd, answer, strlen(answer), 0)==-1) perror("send");
 
 		close(new_fd);  // parent doesn't need this
 	}
